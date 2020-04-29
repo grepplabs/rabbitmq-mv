@@ -2,6 +2,8 @@
 
 .PHONY: clean build fmt test
 
+TAG           ?= "v0.0.1"
+
 BUILD_FLAGS   ?=
 BINARY        ?= rabbitmq-mv
 VERSION       ?= $(shell git describe --tags --always --dirty)
@@ -12,6 +14,8 @@ GOOS          ?= linux
 
 LOCAL_IMAGE   ?= local/$(GOOS)-$(GOARCH)/$(BINARY)
 LOCAL_BIN     ?= $(BINARY)-$(GOOS)-$(GOARCH)
+
+CLOUD_IMAGE   ?= grepplabs/rabbitmq-mv:$(TAG)
 
 ROOT_DIR      := $(shell dirname $(realpath $(lastword $(MAKEFILE_LIST))))
 
@@ -38,6 +42,12 @@ docker.copy: docker.build
 	$(eval RESULT=$(shell sh -c "docker rm $(BUILDCONTAINER)"))
 	$(eval RESULT=$(shell sh -c "docker rmi $(LOCAL_IMAGE)"))
 	echo "Binary copied to local directory"
+
+.PHONY: docker.push
+docker.push:
+	docker build -f Dockerfile -t $(LOCAL_IMAGE) .
+	docker tag $(LOCAL_IMAGE) $(CLOUD_IMAGE)
+	docker push $(CLOUD_IMAGE)
 
 .PHONY: build.os
 build.os: clean docker.copy
@@ -79,3 +89,20 @@ vendor:
 tidy:
 	GO111MODULE=on go mod tidy
 
+.PHONY: tag
+tag:
+	git tag $(TAG)
+
+.PHONY: release.setup
+release.setup:
+	curl -sfL https://install.goreleaser.com/github.com/goreleaser/goreleaser.sh | sh
+
+.PHONY: release.skip-publish
+release.skip-publish: release.setup
+	$(ROOT_DIR)/bin/goreleaser release --rm-dist --skip-publish --snapshot
+
+.PHONY: release.publish
+release.publish: release.setup
+	@[ "${GITHUB_TOKEN}" ] && echo "releasing $(TAG)" || ( echo "GITHUB_TOKEN is not set"; exit 1 )
+	git push origin $(TAG)
+	$(ROOT_DIR)/bin/goreleaser release --rm-dist

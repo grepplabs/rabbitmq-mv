@@ -2,6 +2,27 @@
 
 rabbitmq-mv is a utility to move messages from one rabbitmq queue to another one.
 
+## Install binary release
+
+1. Download the latest release
+
+   Linux
+
+        curl -Ls https://github.com/grepplabs/rabbitmq-mv/releases/download/v0.0.1/rabbitmq-mv-v0.0.1-linux-amd64.tar.gz | tar xz
+
+   macOS
+
+        curl -Ls https://github.com/grepplabs/rabbitmq-mv/releases/download/v0.0.1/rabbitmq-mv-v0.0.1-darwin-amd64.tar.gz | tar xz
+
+   windows
+
+        curl -Ls https://github.com/grepplabs/rabbitmq-mv/releases/download/v0.0.1/rabbitmq-mv-v0.0.1-windows-amd64.tar.gz | tar xz
+
+2. Move the binary in to your PATH.
+
+    ```
+    sudo mv ./rabbitmq-mv /usr/local/bin/rabbitmq-mv
+    ```
 
 ## Build binary
 
@@ -35,7 +56,9 @@ rabbitmq-mv is a utility to move messages from one rabbitmq queue to another one
             Use producer transactions (slow)
 
 
+## Docker 
 
+    docker run -it --rm grepplabs/rabbitmq-mv:v0.0.1 -help
 
 ## Usage examples
 
