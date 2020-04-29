@@ -1,0 +1,18 @@
+# github.com/konsorten/go-windows-terminal-sequences v1.0.3
+## explicit
+github.com/konsorten/go-windows-terminal-sequences
+# github.com/oklog/run v1.1.0
+## explicit
+github.com/oklog/run
+# github.com/pkg/errors v0.9.1
+## explicit
+github.com/pkg/errors
+# github.com/sirupsen/logrus v1.5.0
+## explicit
+github.com/sirupsen/logrus
+# github.com/streadway/amqp v0.0.0-20200108173154-1c71cc93ed71
+## explicit
+github.com/streadway/amqp
+# golang.org/x/sys v0.0.0-20200428200454-593003d681fa
+## explicit
+golang.org/x/sys/unix
