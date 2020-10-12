@@ -17,7 +17,7 @@ LOCAL_BIN     ?= $(BINARY)-$(GOOS)-$(GOARCH)
 
 CLOUD_IMAGE   ?= grepplabs/rabbitmq-mv:$(TAG)
 
-ROOT_DIR      := $(shell dirname $(realpath $(lastword $(MAKEFILE_LIST))))
+ROOT_DIR      := $(shell dirname $(realpath $(firstword $(MAKEFILE_LIST))))
 
 default: build
 
